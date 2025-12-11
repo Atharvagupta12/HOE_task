@@ -1,26 +1,74 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  @apply bg-[#020617] text-slate-100 antialiased;
 }
+
+/* Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1f2937 #020617;
+}
+
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+*::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #1f2937;
+  border-radius: 999px;
+}
+
+/* Utility layer overrides */
+@layer components {
+  .cc-container {
+    @apply max-w-6xl mx-auto px-4 md:px-6;
+  }
+
+  .cc-card {
+    @apply rounded-2xl border border-[#1e293b] bg-gradient-to-b from-[#020818]/80 to-black/60 shadow-[0_0_40px_rgba(15,23,42,0.45)];
+  }
+
+  .cc-btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-[#22c55e] px-4 py-2 text-sm font-medium text-slate-950 shadow-md transition hover:bg-emerald-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e] focus-visible:ring-offset-2 focus-visible:ring-offset-[#020617];
+  }
+
+  .cc-btn-ghost {
+    @apply inline-flex items-center justify-center rounded-full border border-[#1e293b] bg-transparent px-4 py-2 text-sm font-medium text-slate-200/80 transition hover:bg-slate-900/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-700;
+  }
+
+  .cc-input {
+    @apply w-full rounded-xl border border-[#1e293b] bg-slate-950/60 px-3 py-2 text-sm text-slate-100 shadow-sm transition placeholder:text-slate-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#22c55e]/70 focus-visible:border-transparent;
+  }
+
+  .cc-label {
+    @apply text-xs font-medium text-slate-300;
+  }
+
+  .cc-badge {
+    @apply inline-flex items-center rounded-full border border-[#1e293b] bg-slate-950/80 px-2.5 py-0.5 text-[11px] font-medium uppercase tracking-wide text-slate-400;
+  }
+
+  .cc-btn-secondary {
+  @apply px-4 py-2 rounded-md border border-slate-700 text-slate-300 bg-slate-800 hover:bg-slate-700 text-sm;
+}
+
+.cc-btn-danger {
+  @apply px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700 text-sm;
+}
+}
+

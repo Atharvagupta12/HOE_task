@@ -1,36 +1,95 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# House of EdTech – Fullstack Assignment Project
 
-## Getting Started
+This project is a full-stack application built as part of the House of EdTech developer assignment.  
+The goal was to design a small but meaningful tool that demonstrates real product thinking, secure backend architecture, and a clean, modern UI using Next.js 16.
 
-First, run the development server:
+The application is built for cohort-based learning teams. Mentors and admins can create programs, track progress, and manage cohort information in one place. The focus of the project was not just CRUD operations, but building something that feels structured, scalable, and close to a real EdTech product.
 
-```bash
+---
+
+## Features
+
+### 🔐 Authentication & Authorization  
+- JWT-based login system using HTTP-only cookies  
+- Role-based access (Admin & Mentor can create programs, Learners have restricted access)  
+- Secure server-side checks using middleware and protected API routes  
+
+### 📚 Program Management  
+- Create new programs (Mentor/Admin only)  
+- View all existing programs  
+- Each program stores title, description, mentor, and dates  
+- Clean form validation using Zod  
+- Fully connected to MongoDB with proper schema and timestamps  
+
+### ⚡ Modern UI & UX  
+- Built using Tailwind CSS  
+- Minimal, dark UI inspired by modern EdTech dashboards  
+- Responsive design  
+- Reusable components (buttons, cards, sections)  
+- SSR and server components for performance  
+
+### 🛠️ Tech Stack
+- **Next.js 16** (App Router, API Routes, SSR)
+- **MongoDB** (Native driver)
+- **Tailwind CSS**
+- **TypeScript**
+- **Zod** for input validation
+- **JWT Authentication**
+
+---
+
+## Folder Structure (Important parts)
+
+src/
+└─ app/
+├─ api/
+│ └─ auth/ (login, register, logout)
+│ └─ programs/ (program CRUD)
+│ └─ checkins/
+│
+├─ login/
+├─ register/
+├─ dashboard/
+├─ programs/
+│ ├─ new/
+│ └─ [id]/
+│
+├─ layout.tsx
+└─ page.tsx
+
+
+---
+
+## How to Run
+
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Set the following environment variables:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+MONGODB_URI=your_database_uri
+JWT_SECRET=your_secret_key
+NEXTAUTH_URL=http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Why this project is different from a basic CRUD app
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The assignment focuses on showcasing architecture and thinking, not just CRUD.  
+This project includes:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Proper role-based authorization  
+- Secure server-only auth handling  
+- Validation using Zod schemas  
+- A clean dashboard-style UI  
+- A structure that can genuinely scale into a real EdTech tool  
 
-## Deploy on Vercel
+It’s intentionally built like a small production system, not a demo.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Credits  
+
+**Built by Atharva Gupta**  
+GitHub • LinkedIn
