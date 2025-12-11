@@ -57,7 +57,6 @@ src/
 ├─ layout.tsx
 └─ page.tsx
 
-
 ---
 
 ## How to Run
