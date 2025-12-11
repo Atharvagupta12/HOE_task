@@ -29,7 +29,7 @@ export default function RegisterPage() {
       return;
     }
 
-    window.location.href = "/login";
+    window.location.href = "/";
   }
 
   return (

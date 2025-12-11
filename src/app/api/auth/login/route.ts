@@ -31,7 +31,7 @@ export async function POST(req: Request) {
     role: user.role,
   });
 
-  const res = NextResponse.json({ ok: true });
+  const res = NextResponse.redirect(new URL("/dashboard", req.url));
   res.cookies.set("cc_token", token, {
     httpOnly: true,
     secure: true,
