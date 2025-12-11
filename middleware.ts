@@ -1,15 +1,14 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { verifyJWT } from "./src/lib/jwt";
+import jwt from "jsonwebtoken";
+
+const SECRET = process.env.JWT_SECRET!;
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("cc_token")?.value;
 
-  const protectedRoutes = [
-    "/dashboard",
-    "/programs",
-    "/checkins",
-  ];
+  // Routes that require authentication
+  const protectedRoutes = ["/dashboard", "/programs", "/checkins"];
 
   const isProtected = protectedRoutes.some((path) =>
     req.nextUrl.pathname.startsWith(path)
@@ -17,16 +16,19 @@ export function middleware(req: NextRequest) {
 
   if (!isProtected) return NextResponse.next();
 
+  // If no token → redirect
   if (!token) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
-  const valid = verifyJWT(token);
-  if (!valid) {
+  try {
+    // Must verify JWT **inside middleware only**
+    jwt.verify(token, SECRET);
+    return NextResponse.next();
+  } catch (err) {
+    console.error("JWT verification failed in middleware:", err);
     return NextResponse.redirect(new URL("/login", req.url));
   }
-
-  return NextResponse.next();
 }
 
 export const config = {
