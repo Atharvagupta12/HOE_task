@@ -3,7 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 
-export default function MobileNav({ user }) {
+type MobileNavProps = {
+  user: {
+    id: string;
+    role: "ADMIN" | "MENTOR" | "LEARNER";
+    name: string;
+    email: string;
+  } | null;
+};
+
+export default function MobileNav({ user }: MobileNavProps){
   const [open, setOpen] = useState(false);
 
   return (
