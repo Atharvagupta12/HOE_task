@@ -1,36 +1,6 @@
-"use client";
-
-import { useState } from "react";
+import { createProgram } from "../actions";
 
 export default function NewProgramPage() {
-  const [error, setError] = useState("");
-
-  async function handleSubmit(e: any) {
-    e.preventDefault();
-    setError("");
-
-    const form = new FormData(e.target);
-    const data = {
-      title: form.get("title"),
-      description: form.get("description"),
-      startDate: form.get("startDate"),
-      endDate: form.get("endDate"),
-    };
-
-    const res = await fetch("/api/programs", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
-      const body = await res.json();
-      setError(body.error || "Failed");
-      return;
-    }
-
-    window.location.href = "/programs";
-  }
-
   return (
     <div className="cc-container py-10 max-w-lg">
       <h1 className="text-xl font-semibold">Create Program</h1>
@@ -38,9 +8,7 @@ export default function NewProgramPage() {
         Add a new program inside House of EdTech.
       </p>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {error && <p className="text-red-400 text-sm">{error}</p>}
-
+      <form action={createProgram} className="space-y-4">
         <div>
           <label className="cc-label">Title</label>
           <input name="title" className="cc-input" required />
@@ -67,7 +35,9 @@ export default function NewProgramPage() {
           </div>
         </div>
 
-        <button className="cc-btn-primary w-full">Create Program</button>
+        <button className="cc-btn-primary w-full">
+          Create Program
+        </button>
       </form>
     </div>
   );

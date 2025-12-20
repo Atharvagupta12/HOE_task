@@ -55,7 +55,7 @@ export default async function ProgramDetailPage({ params }: any) {
       )}
 
       {/* Check-in List */}
-      <CheckinList checkins={checkins} />
+      <CheckinList checkins={checkins} user={user} />
     </div>
   );
 }

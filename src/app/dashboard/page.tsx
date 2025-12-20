@@ -3,6 +3,8 @@ import { getAuthUser } from "@/lib/auth";
 export default async function DashboardPage() {
   const user = await getAuthUser();
 
+   console.log("AUTH USER:", user);
+
   if (!user) {
     return (
       <div className="cc-container py-10">

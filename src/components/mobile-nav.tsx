@@ -12,7 +12,7 @@ type MobileNavProps = {
   } | null;
 };
 
-export default function MobileNav({ user }: MobileNavProps){
+export default function MobileNav({ user }: MobileNavProps) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -35,7 +35,6 @@ export default function MobileNav({ user }: MobileNavProps){
       {/* Mobile Dropdown */}
       {open && (
         <div className="absolute top-14 left-0 w-full bg-black/90 backdrop-blur-md border-t border-slate-800/60 p-6 space-y-4 z-50 md:hidden">
-
           <Link
             href="/dashboard"
             className="block text-slate-200 text-sm"
@@ -71,11 +70,12 @@ export default function MobileNav({ user }: MobileNavProps){
               </Link>
             </>
           ) : (
-            <form action="/api/auth/logout" method="POST">
-              <button
-                className="text-red-400 text-sm"
-                onClick={() => setOpen(false)}
-              >
+            <form
+              action="/api/auth/logout"
+              method="POST"
+              onSubmit={() => setOpen(false)}
+            >
+              <button type="submit" className="text-red-400 text-sm">
                 Sign out
               </button>
             </form>

@@ -1,3 +1,5 @@
+"use server";
+
 import { cookies } from "next/headers";
 import { verifyJWT } from "./jwt";
 
@@ -10,8 +12,8 @@ export type AuthUser = {
 
 export async function getAuthUser(): Promise<AuthUser | null> {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("cc_token")?.value;
+   const cookieStore = cookies(); // 
+  const token = (await cookieStore).get("cc_token")?.value;
     if (!token) return null;
 
     return verifyJWT<AuthUser>(token);
@@ -29,8 +31,6 @@ export async function requireAuth() {
 export async function requireRole(roles: Array<AuthUser["role"]>) {
   const user = await getAuthUser();
   if (!user) throw new Error("UNAUTHORIZED");
-
   if (!roles.includes(user.role)) throw new Error("FORBIDDEN");
-
   return user;
 }

@@ -1,60 +1,24 @@
 "use client";
 
 import { useState } from "react";
+import { updateCheckin, deleteCheckin } from "./actions";
 
 export default function CheckinList({ checkins, user }: any) {
   const [editing, setEditing] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
-  async function deleteCheckin(id: string) {
-    if (!confirm("Delete this check-in?")) return;
-
-    setLoading(true);
-    const res = await fetch(`/api/checkins/${id}`, { method: "DELETE" });
-    setLoading(false);
-
-    if (!res.ok) return alert("Failed");
-    window.location.reload();
-  }
-
-  async function updateCheckin(e: any, id: string) {
-    e.preventDefault();
-    setLoading(true);
-
-    const form = new FormData(e.target);
-    const data = {
-      mood: Number(form.get("mood")),
-      progress: form.get("progress"),
-      blockers: form.get("blockers"),
-      plan: form.get("plan"),
-    };
-
-    const res = await fetch(`/api/checkins/${id}`, {
-      method: "PUT",
-      body: JSON.stringify(data),
-    });
-
-    setLoading(false);
-
-    if (!res.ok) return setError("Update failed");
-
-    setEditing(null);
-    window.location.reload();
-  }
-
-  if (checkins.length === 0)
+  if (checkins.length === 0) {
     return (
       <div className="cc-card p-5 text-sm text-slate-500">
         No check-ins yet.
       </div>
     );
+  }
 
   return (
     <div className="space-y-4">
       {checkins.map((c: any) => {
         const isOwner = c.userId === user?.id;
-        const canEdit = isOwner || user?.role !== "LEARNER";
+        const canEdit = isOwner;
 
         return (
           <div key={c._id} className="cc-card p-4 space-y-3">
@@ -64,26 +28,16 @@ export default function CheckinList({ checkins, user }: any) {
                 {new Date(c.createdAt).toLocaleDateString()}
               </p>
 
-              <span
-                className={`cc-badge ${
-                  c.mood >= 4
-                    ? "bg-emerald-500/20 text-emerald-300"
-                    : c.mood === 3
-                    ? "bg-yellow-500/20 text-yellow-300"
-                    : "bg-red-500/20 text-red-300"
-                }`}
-              >
+              <span className="cc-badge">
                 Mood {c.mood}
               </span>
             </div>
 
-            {/* EDIT FORM */}
+            {/* EDIT MODE */}
             {editing === c._id && (
-              <form
-                onSubmit={(e) => updateCheckin(e, c._id)}
-                className="space-y-3"
-              >
-                {error && <p className="text-red-400 text-sm">{error}</p>}
+              <form action={updateCheckin} className="space-y-3">
+                <input type="hidden" name="checkinId" value={c._id} />
+                <input type="hidden" name="programId" value={c.programId} />
 
                 <input
                   name="mood"
@@ -96,21 +50,18 @@ export default function CheckinList({ checkins, user }: any) {
 
                 <textarea
                   name="progress"
-                  rows={2}
                   defaultValue={c.progress}
                   className="cc-input"
                 />
 
                 <textarea
                   name="blockers"
-                  rows={2}
                   defaultValue={c.blockers}
                   className="cc-input"
                 />
 
                 <textarea
                   name="plan"
-                  rows={2}
                   defaultValue={c.plan}
                   className="cc-input"
                 />
@@ -128,24 +79,13 @@ export default function CheckinList({ checkins, user }: any) {
               </form>
             )}
 
-            {/* VIEW MODE */}
+            
             {editing !== c._id && (
               <>
-                <p className="text-sm">
-                  <strong className="text-slate-300">Progress:</strong>{" "}
-                  {c.progress}
-                </p>
+                <p><strong>Progress:</strong> {c.progress}</p>
+                <p><strong>Blockers:</strong> {c.blockers}</p>
+                <p><strong>Plan:</strong> {c.plan}</p>
 
-                <p className="text-sm">
-                  <strong className="text-slate-300">Blockers:</strong>{" "}
-                  {c.blockers}
-                </p>
-
-                <p className="text-sm">
-                  <strong className="text-slate-300">Plan:</strong> {c.plan}
-                </p>
-
-                {/* ACTION BUTTONS */}
                 {canEdit && (
                   <div className="flex gap-3 pt-2">
                     <button
@@ -155,13 +95,13 @@ export default function CheckinList({ checkins, user }: any) {
                       Edit
                     </button>
 
-                    <button
-                      className="cc-btn-danger"
-                      onClick={() => deleteCheckin(c._id)}
-                      disabled={loading}
-                    >
-                      Delete
-                    </button>
+                    <form action={deleteCheckin}>
+                      <input type="hidden" name="checkinId" value={c._id} />
+                      <input type="hidden" name="programId" value={c.programId} />
+                      <button className="cc-btn-danger">
+                        Delete
+                      </button>
+                    </form>
                   </div>
                 )}
               </>
